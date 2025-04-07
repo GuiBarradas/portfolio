@@ -8,13 +8,12 @@ import { PixelAvatar } from "@/components/pixel-avatar"
 import { PixelSkill } from "@/components/pixel-skill"
 import { PixelIcon } from "@/components/pixel-icon"
 import { BackgroundMusic } from "@/components/background-music"
+import { ThemeToggle } from "@/components/theme-toggle" 
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col font-pixel relative overflow-hidden">
-      {/* Fundo simples com gradiente */}
       <div className="fixed inset-0 z-0 bg-gradient-to-b from-[#1A1A2E] via-[#1A1A2E] to-[#1A1A2E]">
-        {/* Grade de fundo sutil */}
         <div className="absolute inset-0 grid grid-cols-[repeat(40,1fr)] grid-rows-[repeat(40,1fr)] opacity-20">
           {Array.from({ length: 40 }).map((_, i) => (
             <div key={`h-${i}`} className="col-span-full h-px bg-[#7C6798]" style={{ gridRow: i + 1 }} />
@@ -25,7 +24,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Barra de navegação pixelizada */}
       <header className="sticky top-0 z-50 w-full border-b-[4px] border-[#B990FA] bg-[#1A1A2E]/90 backdrop-blur-sm">
         <div className="container flex h-16 items-center justify-between">
           <div className="font-bold text-xl text-white font-pixel-title">
@@ -69,12 +67,12 @@ export default function Home() {
             <PixelIcon type="twitter" />
             <PixelIcon type="mail" />
             <PixelButton variant="minecraft">Currículo</PixelButton>
+            <ThemeToggle /> 
           </div>
         </div>
       </header>
 
       <main className="flex-1 text-white relative z-10">
-        {/* Seção Hero com fundo pixelizado */}
         <section className="relative py-24 sm:py-32 overflow-hidden">
           <div className="container relative z-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
@@ -99,7 +97,6 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Seção Sobre */}
         <section id="about" className="py-16 md:py-24 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-[#1A1A2E]/70 to-[#7C6798]/50 z-0"></div>
           <div className="container relative z-10">
