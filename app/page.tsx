@@ -7,6 +7,7 @@ import { PixelContactForm } from "@/components/pixel-contact-form"
 import { PixelAvatar } from "@/components/pixel-avatar"
 import { PixelSkill } from "@/components/pixel-skill"
 import { PixelIcon } from "@/components/pixel-icon"
+import { BackgroundMusic } from "@/components/background-music"
 
 export default function Home() {
   return (
@@ -358,6 +359,7 @@ export default function Home() {
           </div>
         </div>
       </footer>
+      <BackgroundMusic />
     </div>
   )
 }
