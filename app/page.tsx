@@ -324,7 +324,7 @@ export default function Home() {
                   </div>
                   <div className="flex items-center gap-3">
                     <PixelIcon type="linkedin" className="w-6 h-6" />
-                    <span className="font-pixel text-[#FAEAFF]">linkedin.com/in/blockdev</span>
+                    <span className="font-pixel text-[#FAEAFF]">https://www.linkedin.com/in/guilherme-barradas-47781820b/</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <PixelIcon type="github" className="w-6 h-6" />
