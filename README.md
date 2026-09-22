@@ -48,27 +48,27 @@ on the client. Everything that looks like a number is a real number: press F3.
 ```mermaid
 flowchart LR
   subgraph browser
-    hud[hud.js<br/>F3 overlay]
-    radio[radio.js<br/>one audio element]
-    sfx[sfx.js<br/>sounds, HP, death]
-    net[net.js<br/>MLP on a canvas]
+    hud["hud.js<br/>F3 overlay"]
+    radio["radio.js<br/>one audio element"]
+    sfx["sfx.js<br/>sounds, HP, death"]
+    net["net.js<br/>MLP on a canvas"]
     door[door.js]
     egg[egg.js]
   end
   subgraph binary["one Go binary (24 MB, scratch image)"]
-    mux[net/http mux<br/>Go 1.22 patterns]
-    views[templ views<br/>i18n table]
-    metrics[metrics<br/>ring buffer + rusage]
-    station[radio<br/>schedule = f(clock)]
-    articles[articles<br/>markdown → html at boot]
-    static[embed.FS<br/>css, js, img, sfx, ogg, md]
+    mux["net/http mux<br/>Go 1.22 patterns"]
+    views["templ views<br/>i18n table"]
+    metrics["metrics<br/>ring buffer + rusage"]
+    station["radio<br/>schedule = f(clock)"]
+    articles["articles<br/>markdown → html at boot"]
+    static["embed.FS<br/>css, js, img, sfx, ogg, md"]
   end
   browser -- "GET / , /articles/{slug}" --> mux --> views
   hud -- "SSE /metrics/stream" --> metrics
   radio -- "/radio/now, /radio/playlist" --> station
   mux --> articles
   mux -- "/static/*" --> static
-  egg -- iframe --> mojang[(classic.minecraft.net)]
+  egg -- iframe --> mojang[("classic.minecraft.net")]
 ```
 
 Every request goes through one middleware that counts it, measures its latency into a 1024-slot ring
@@ -81,8 +81,8 @@ sequenceDiagram
   participant B as browser
   participant S as server
   B->>S: click ♪ → GET /radio/now
-  S-->>B: {index, url, offset_s, next}  (pos = (now − epoch) mod total)
-  B->>B: audio.src = url; seek offset_s + round trip; play()
+  S-->>B: index, url, offset_s, next. pos = (now − epoch) mod total
+  B->>B: audio.src = url, seek to offset_s plus the round trip, play()
   Note over B: same audio element for the whole session,<br/>unlocked by play() inside the tap (iOS)
   B->>S: track ended → GET /radio/now
   S-->>B: next track, offset ≈ 0
