@@ -1,0 +1,77 @@
+package views
+
+import (
+	"fmt"
+
+	"github.com/GuiBarradas/portfolio/internal/articles"
+)
+
+// Articles lists the writing. Each card opens the piece here, on the site,
+// so the browser's translator works; the platform badge is for engaging.
+templ Articles(l Lang, list []articles.Article) {
+	@Layout(l, t(l, "art.title")) {
+		<main id="top" class="articles">
+			@backDoor(l)
+			<header class="page-head">
+				<p class="hero-kicker">{ t(l, "art.kicker") }</p>
+				<h1>{ t(l, "art.h") }</h1>
+				<p class="hero-sub">{ t(l, "art.sub") }</p>
+			</header>
+			<ol class="posts">
+				for _, a := range list {
+					<li>
+						<a class="card" href={ templ.SafeURL("/articles/" + a.Slug) }>
+							<small>{ a.Date } · { a.Lang } · { readTime(l, a.Words) }</small>
+							<h3>{ a.Title }</h3>
+							<p>{ a.Summary }</p>
+							<small>{ t(l, "art.read") }</small>
+						</a>
+					</li>
+				}
+			</ol>
+		</main>
+	}
+}
+
+// Article is one piece, full text, with a badge back to where it was published.
+templ Article(l Lang, a articles.Article) {
+	@Layout(l, a.Title + " · faalldev") {
+		<main id="top" class="articles">
+			@backDoor(l)
+			<article class="post" lang={ a.Lang }>
+				<header class="page-head">
+					<p class="hero-kicker">
+						<a href="/articles">{ t(l, "art.crumb") }</a> · { a.Date } · { readTime(l, a.Words) }
+					</p>
+					<h1>{ a.Title }</h1>
+				</header>
+				<div class="prose">
+					@templ.Raw(a.HTML)
+				</div>
+				<footer class="post-foot">
+					if a.Source != "" {
+						<a class="badge" href={ templ.SafeURL(a.Source) } rel="noopener">
+							<span class="badge-icon">in</span>
+							<span>{ fmt.Sprintf(t(l, "art.badge"), a.Platform) }</span>
+						</a>
+					}
+				</footer>
+			</article>
+		</main>
+	}
+}
+
+templ backDoor(l Lang) {
+	<a class="door door-back" href="/" aria-label={ t(l, "door.homeAria") }>
+		<span class="door-cap">{ t(l, "door.home") }</span>
+		<span class="door-way"><span class="door-leaf"></span></span>
+	</a>
+}
+
+func readTime(l Lang, words int) string {
+	m := (words + 199) / 200 // ~200 wpm
+	if m < 1 {
+		m = 1
+	}
+	return fmt.Sprintf("%d %s", m, t(l, "art.min"))
+}

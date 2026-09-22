@@ -1,0 +1,44 @@
+{
+  "tracks": [
+    {
+      "title": "minecraft",
+      "artist": "C418",
+      "file": "minecraft.ogg"
+    },
+    {
+      "title": "sweden",
+      "artist": "C418",
+      "file": "sweden.ogg"
+    },
+    {
+      "title": "subwoofer lullaby",
+      "artist": "C418",
+      "file": "subwoofer_lullaby.ogg"
+    },
+    {
+      "title": "wet hands",
+      "artist": "C418",
+      "file": "wet_hands.ogg"
+    },
+    {
+      "title": "clark",
+      "artist": "C418",
+      "file": "clark.ogg"
+    },
+    {
+      "title": "haggstrom",
+      "artist": "C418",
+      "file": "haggstrom.ogg"
+    },
+    {
+      "title": "mice on venus",
+      "artist": "C418",
+      "file": "mice_on_venus.ogg"
+    },
+    {
+      "title": "danny",
+      "artist": "C418",
+      "file": "danny.ogg"
+    }
+  ]
+}

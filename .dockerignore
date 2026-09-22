@@ -1,0 +1,4 @@
+bin/
+tmp/
+.git/
+*_templ.go

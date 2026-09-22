@@ -1,0 +1,114 @@
+package views
+
+templ Layout(l Lang, title string) {
+	<!DOCTYPE html>
+	<html lang={ string(l) }>
+		<head>
+			<meta charset="utf-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1"/>
+			<title>{ title }</title>
+			<meta name="description" content={ t(l, "meta.desc") }/>
+			<meta name="color-scheme" content="dark"/>
+			<link rel="preload" href="/static/fonts/silkscreen.woff2" as="font" type="font/woff2" crossorigin/>
+			<link rel="stylesheet" href="/static/css/main.css?v=31"/>
+			<link rel="icon" type="image/png" sizes="32x32" href="/static/img/favicon.png?v=3"/>
+		</head>
+		<body>
+			{ children... }
+			@Hotbar(l)
+			@HUD()
+			<script src="/static/js/hud.js?v=5" defer></script>
+			<script src="/static/js/sfx.js?v=10" defer></script>
+			<script src="/static/js/radio.js?v=7" defer></script>
+			<script src="/static/js/egg.js?v=1" defer></script>
+			<script src="/static/js/splash.js?v=4" defer></script>
+			<script src="/static/js/door.js?v=3" defer></script>
+			<script src="/static/js/net.js?v=3" defer></script>
+		</body>
+	</html>
+}
+
+// Hotbar is the site navigation, drawn like a Minecraft hotbar: nine slots, one selected.
+templ Hotbar(l Lang) {
+	<nav class="hotbar" aria-label={ t(l, "nav.aria") }>
+		<a href="/#top" class="slot" data-key="1"><span class="slot-icon">⌂</span><span class="slot-label">{ t(l, "nav.home") }</span></a>
+		<a href="/#about" class="slot" data-key="2"><span class="slot-icon">?</span><span class="slot-label">{ t(l, "nav.about") }</span></a>
+		<a href="/#inventory" class="slot" data-key="3"><span class="slot-icon">▦</span><span class="slot-label">{ t(l, "nav.skills") }</span></a>
+		<a href="/#projects" class="slot" data-key="4"><span class="slot-icon">⚒</span><span class="slot-label">{ t(l, "nav.projects") }</span></a>
+		<a href="/#experience" class="slot" data-key="5"><span class="slot-icon">≡</span><span class="slot-label">{ t(l, "nav.work") }</span></a>
+		<a href="/#contact" class="slot" data-key="6"><span class="slot-icon">&#64;</span><span class="slot-label">{ t(l, "nav.contact") }</span></a>
+		<a href="/articles" class="slot" data-key="7"><span class="slot-icon">▯</span><span class="slot-label">{ t(l, "nav.articles") }</span></a>
+		<button type="button" class="slot slot-hud" data-key="F3" id="hud-toggle" aria-pressed="false"><span class="slot-icon">F3</span><span class="slot-label">{ t(l, "nav.debug") }</span></button>
+		<button type="button" class="slot slot-radio" data-key="R" id="radio-toggle" aria-pressed="false" title={ t(l, "nav.radioTitle") }><span class="slot-icon">♪</span><span class="slot-label">{ t(l, "nav.radio") }</span></button>
+		<a href={ templ.SafeURL("/lang/" + string(l.Other())) } class="slot slot-lang" data-key="L" id="lang-toggle" title={ t(l, "nav.langTitle") } hreflang={ string(l.Other()) }><span class="slot-icon">{ t(l, "nav.langIcon") }</span><span class="slot-label">{ t(l, "nav.lang") }</span></a>
+		<button type="button" class="slot slot-egg" id="egg-toggle" hidden title={ t(l, "nav.eggTitle") }><span class="slot-icon">!</span><span class="slot-label">{ t(l, "nav.egg") }</span></button>
+	</nav>
+	@Radio(l)
+	@Egg(l)
+}
+
+// Egg is the modal behind the "don't click" slot, which only shows up after the
+// avatar has died once. It embeds the official Minecraft Classic (2009), which
+// Mojang serves for free at classic.minecraft.net. The iframe is created on open
+// and removed on close, so nothing runs until you ask for it.
+templ Egg(l Lang) {
+	<div class="egg" id="egg" hidden role="dialog" aria-modal="true" aria-labelledby="egg-title">
+		<div class="egg-box">
+			<div class="egg-bar">
+				<span id="egg-title">{ t(l, "egg.title") }</span>
+				<button type="button" class="rbtn" id="egg-close" title={ t(l, "egg.close") }>x</button>
+			</div>
+			<div class="egg-frame" id="egg-frame"><p class="egg-hint">{ t(l, "egg.hint") }</p></div>
+			<p class="egg-foot">{ t(l, "egg.foot") }</p>
+		</div>
+	</div>
+}
+
+// Radio is the player bar pinned to the top while the station is on:
+// transport on the left, scrolling title in the middle, volume on the right.
+templ Radio(l Lang) {
+	<div class="radio" id="radio" hidden role="region" aria-label={ t(l, "radio.aria") }>
+		<div class="radio-ctl">
+			<button type="button" class="rbtn" id="radio-prev" title={ t(l, "radio.prev") }>&lt;&lt;</button>
+			<button type="button" class="rbtn" id="radio-pause" title={ t(l, "radio.pause") } aria-pressed="false">||</button>
+			<button type="button" class="rbtn" id="radio-next" title={ t(l, "radio.next") }>&gt;&gt;</button>
+		</div>
+		<div class="radio-title" aria-live="polite"><span id="radio-np"></span></div>
+		<label class="radio-vol">
+			<span class="radio-vol-label">{ t(l, "radio.vol") }</span>
+			<input type="range" id="radio-volume" min="0" max="100" value="50" aria-label={ t(l, "radio.volA") }/>
+		</label>
+	</div>
+}
+
+// HUD is the F3 debug overlay. Every value is filled by hud.js from /metrics/stream
+// and the browser's Performance API. Nothing here is hardcoded. It stays in
+// English in every language, like the real F3.
+templ HUD() {
+	<aside class="hud" id="hud" hidden aria-label="Live server debug info">
+		<div class="hud-col">
+			<p class="hud-title">faalldev 2.0 (go/templ/htmx)</p>
+			<p>server</p>
+			<p>uptime: <b data-m="uptime">…</b></p>
+			<p>requests: <b data-m="requests">…</b> (<b data-m="rps">…</b> rps)</p>
+			<p>latency p50/p99: <b data-m="p50">…</b> / <b data-m="p99">…</b> ms</p>
+			<p>heap: <b data-m="heap">…</b> MB / sys <b data-m="sys">…</b> MB</p>
+			<p>goroutines: <b data-m="goroutines">…</b></p>
+			<p>gc: <b data-m="numgc">…</b> runs, last pause <b data-m="gcpause">…</b> µs</p>
+			<p>cpu: user <b data-m="cpuuser">…</b> ms, sys <b data-m="cpusys">…</b> ms</p>
+			<p>binary: <b data-m="binary">…</b> MB, <b data-m="go">…</b>, <b data-m="numcpu">…</b> cpu</p>
+			<p>people watching this hud: <b data-m="viewers">…</b></p>
+		</div>
+		<div class="hud-col hud-col--right">
+			<p>client</p>
+			<p>ttfb: <b data-c="ttfb">…</b> ms</p>
+			<p>first paint: <b data-c="fcp">…</b> ms</p>
+			<p>dom ready: <b data-c="dom">…</b> ms</p>
+			<p>page weight: <b data-c="weight">…</b> KB transferred</p>
+			<p>js shipped: <b data-c="js">…</b> KB</p>
+			<p>requests: <b data-c="reqs">…</b></p>
+			<p class="hud-note">previous site (next.js): ~1.9 MB of js</p>
+			<p class="hud-note" data-c="status">connecting…</p>
+		</div>
+	</aside>
+}

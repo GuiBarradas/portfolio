@@ -1,0 +1,176 @@
+package views
+
+type Project struct {
+	Name  string
+	Blurb [2]string // en, pt-BR
+	URL   string
+	Tags  string
+}
+
+type Job struct {
+	Title, When, Blurb [2]string
+	Company            string
+}
+
+var projects = []Project{
+	{"WEbdEX", [2]string{
+		"Crypto arbitrage protocol on Polygon. As lead backend I moved the API from GraphQL to REST on AdonisJS so reads across many tables stopped being heavy, and built the Discord and Telegram servers plus their bots, both wired into the platform.",
+		"Protocolo de arbitragem cripto na Polygon. Como backend líder, levei a API de GraphQL pra REST com AdonisJS pra leituras em várias tabelas pararem de pesar, e criei os servidores do Discord e do Telegram com seus bots, os dois integrados à plataforma.",
+	}, "https://webdex.fyi/", "adonisjs · solidity · polygon · bots"},
+	{"gastei", [2]string{
+		"Personal finance for Brazilian banks: imports OFX and Open Finance statements, categorizes with rules first and an LLM only for the ambiguous, and answers questions about your money in plain language. Hexagonal core; Claude or Gemini behind one adapter.",
+		"Finanças pessoais pra bancos brasileiros: importa extratos OFX e Open Finance, categoriza com regras primeiro e LLM só no ambíguo, e responde perguntas sobre o seu dinheiro em linguagem natural. Núcleo hexagonal; Claude ou Gemini atrás de um adapter.",
+	}, "https://github.com/GuiBarradas/Gastei", "python · fastapi · streamlit · llm"},
+	{"HackATOM 01", [2]string{
+		"Hackathon I created and ran at Atom Smart Chains: port WEbdEX's Solidity contracts from Polygon to Solana with Rust and Anchor. Two editions, 15+ talks, many competing teams, and 7 participants hired onto the team.",
+		"Hackathon que idealizei e organizei na Atom Smart Chains: portar os contratos Solidity do WEbdEX da Polygon pra Solana com Rust e Anchor. Duas edições, mais de 15 palestras, várias equipes competindo e 7 participantes contratados pro time.",
+	}, "https://github.com/GuiBarradas/HackATOM", "solidity · solana · hackathon"},
+	{"this site", [2]string{
+		"Go + templ + htmx, one static binary, no framework on the client. Press F3.",
+		"Go + templ + htmx, um binário estático, nenhum framework no cliente. Aperte F3.",
+	}, "https://github.com/GuiBarradas/portfolio", "go · templ · sse"},
+}
+
+var jobs = []Job{
+	{[2]string{"AI Quality Engineer", "Engenheiro de Qualidade de IA"}, [2]string{"2024 → now", "2024 → hoje"}, [2]string{
+		"Build containerized test environments and adversarial tasks to evaluate AI coding agents. Promoted to reviewer.",
+		"Construo ambientes de teste em contêineres e tarefas adversariais pra avaliar agentes de código. Promovido a revisor.",
+	}, "Scale AI"},
+	{[2]string{"AI Quality Engineer (Anthropic project)", "Engenheiro de Qualidade de IA (projeto Anthropic)"}, [2]string{"2026", "2026"}, [2]string{
+		"Evaluate coding-agent transcripts on real open-source tasks; produce preference data for training.",
+		"Avalio transcrições de agentes de código em tarefas reais de open source; produzo dados de preferência pra treino.",
+	}, "Alignerr"},
+	{[2]string{"Lead Backend Developer", "Desenvolvedor Backend Líder"}, [2]string{"2025 → 2026", "2025 → 2026"}, [2]string{
+		"Led backend of a crypto arbitrage protocol on Polygon. Node/AdonisJS, Solidity, Docker, CI/CD.",
+		"Liderei o backend de um protocolo de arbitragem cripto na Polygon. Node/AdonisJS, Solidity, Docker, CI/CD.",
+	}, "Atom Smart Chains"},
+	{[2]string{"Fullstack Developer Trainee", "Desenvolvedor Fullstack Trainee"}, [2]string{"2022 → 2023", "2022 → 2023"}, [2]string{
+		"ERP systems in PHP. Where the addiction started.",
+		"Sistemas ERP em PHP. Onde o vício começou.",
+	}, "NTL Nova Tecnologia"},
+}
+
+templ Home(l Lang) {
+	@Layout(l, t(l, "title.home")) {
+		<main id="top">
+			<a class="door" href="/articles" id="door" aria-label={ t(l, "door.artAria") }>
+				<span class="door-cap">{ t(l, "door.articles") }</span>
+				<span class="door-way"><span class="door-leaf"></span></span>
+			</a>
+			<header class="hero">
+				<div class="hero-text">
+					<p class="hero-kicker">{ t(l, "hero.kicker") }</p>
+					<h1>{ t(l, "hero.h1a") }<br/><span class="h1-end">{ t(l, "hero.h1b") }<span class="splash" id="splash" aria-hidden="true" title={ t(l, "splash.title") }></span></span></h1>
+					<p class="hero-sub">{ t(l, "hero.sub") }</p>
+					<p class="hero-actions">
+						<a class="btn" href="#projects">{ t(l, "hero.cta") }</a>
+						<a class="btn btn-ghost" href="/static/Guilherme_Barradas_CV_2026.pdf">{ t(l, "hero.cv") }</a>
+					</p>
+				</div>
+				<figure class="avatar-frame">
+					<img src="/static/img/avatar.png?v=3" alt={ t(l, "hero.avatar") } width="192" height="192" tabindex="0" draggable="false"/>
+					<div class="hp" id="hp" role="img" aria-label={ t(l, "hero.hp") }></div>
+					<figcaption>{ t(l, "hero.lvl") }</figcaption>
+				</figure>
+				<figure class="net" title={ t(l, "net.title") }>
+					<canvas id="net" width="80" height="50" tabindex="0" role="img" aria-label={ t(l, "net.aria") }></canvas>
+					<figcaption id="net-cap">{ t(l, "net.warmup") }</figcaption>
+				</figure>
+			</header>
+			<section id="about" class="block">
+				<h2>{ t(l, "about.h") }</h2>
+				<p>{ t(l, "about.p1") }</p>
+				<p>{ t(l, "about.p2") }</p>
+			</section>
+			<section id="inventory" class="block">
+				<h2>{ t(l, "inv.h") }</h2>
+				@Inventory(l)
+			</section>
+			<section id="projects" class="block">
+				<h2>{ t(l, "projects.h") }</h2>
+				<div class="grid">
+					for _, p := range projects {
+						<a class="card" href={ templ.SafeURL(p.URL) }>
+							<h3>{ p.Name }</h3>
+							<p>{ pick(l, p.Blurb) }</p>
+							<small>{ p.Tags }</small>
+						</a>
+					}
+				</div>
+			</section>
+			<section id="experience" class="block">
+				<h2>{ t(l, "work.h") }</h2>
+				<dl class="timeline">
+					for _, j := range jobs {
+						<dt>{ pick(l, j.When) }</dt>
+						<dd><b>{ pick(l, j.Title) }</b> · { j.Company }<br/>{ pick(l, j.Blurb) }</dd>
+					}
+				</dl>
+			</section>
+			<section id="contact" class="block">
+				<h2>{ t(l, "contact.h") }</h2>
+				<p>{ t(l, "contact.p") }</p>
+				<p class="links">
+					<a href="mailto:guilhermebarradasdev@gmail.com">guilhermebarradasdev@gmail.com</a>
+					<a href="https://www.linkedin.com/in/guilherme-m-47781820b/">linkedin</a>
+					<a href="https://github.com/GuiBarradas">github</a>
+				</p>
+			</section>
+			<footer class="foot">{ t(l, "foot") }</footer>
+			<div class="death" id="death" hidden role="dialog" aria-modal="true" aria-labelledby="death-title">
+				<div class="death-box">
+					<h2 id="death-title">{ t(l, "death.h") }</h2>
+					<p>{ t(l, "death.by") }</p>
+					<p>{ t(l, "death.score") } <b id="death-score">0</b></p>
+					<button type="button" class="btn" id="respawn">{ t(l, "death.resp") }</button>
+					<button type="button" class="btn btn-ghost" id="title-screen">{ t(l, "death.title") }</button>
+				</div>
+			</div>
+		</main>
+	}
+}
+
+// Inventory renders skills as hotbar-style slots with a hover tooltip. No 5/5 bars.
+templ Inventory(l Lang) {
+	<div class="inv">
+		for _, g := range groups {
+			<div class="inv-row">
+				<span class="inv-name">{ pick(l, g.Name) }</span>
+				<div class="inv-slots">
+					for _, s := range g.Items {
+						<span class="inv-slot" tabindex="0">{ s.Short }<span class="tip">{ pick(l, s.Full) }</span></span>
+					}
+				</div>
+			</div>
+		}
+	</div>
+}
+
+type Item struct {
+	Short string
+	Full  [2]string
+}
+type Group struct {
+	Name  [2]string
+	Items []Item
+}
+
+func same(s string) [2]string { return [2]string{s, s} }
+
+var groups = []Group{
+	{[2]string{"testing", "testes"}, []Item{
+		{"py", same("pytest / unittest")}, {"ju", same("JUnit / Surefire")}, {"vi", same("vitest")}, {"gg", same("googletest")},
+		{"hx", [2]string{"test harness design", "design de harness de teste"}}, {"rv", [2]string{"code review", "revisão de código"}},
+	}},
+	{[2]string{"ai eval", "avaliação de ia"}, []Item{
+		{"ev", [2]string{"LLM evaluation", "avaliação de LLM"}}, {"rl", [2]string{"RLHF preference data", "dados de preferência (RLHF)"}},
+		{"tr", [2]string{"agent trajectory analysis", "análise de trajetória de agentes"}}, {"ad", [2]string{"adversarial prompts", "prompts adversariais"}},
+		{"rb", [2]string{"rubric design", "design de rubricas"}}, {"bm", [2]string{"benchmark construction", "construção de benchmarks"}},
+	}},
+	{same("backend"), []Item{
+		{"go", same("Go")}, {"ts", same("TypeScript / Node")}, {"py", same("Python")}, {"ad", same("AdonisJS")}, {"gq", same("GraphQL")}, {"pg", same("PostgreSQL")},
+	}},
+	{same("infra"), []Item{
+		{"dk", same("Docker")}, {"ci", same("GitHub Actions / GitLab CI")}, {"lx", same("Linux")}, {"px", same("Proxmox")}, {"gf", same("Grafana / Zabbix")}, {"sol", same("Solidity / Polygon")},
+	}},
+}

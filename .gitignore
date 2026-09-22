@@ -1,0 +1,9 @@
+bin/
+tmp/
+*_templ.go
+linkedin-post.txt
+
+# Mojang assets: copied from a local Minecraft install by scripts/mc_sfx.py, never redistributed here
+static/sfx/*.ogg
+static/radio/*.ogg
+static/img/mc/*.png
