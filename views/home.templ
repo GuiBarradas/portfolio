@@ -88,6 +88,18 @@ templ Home(l Lang) {
 			</section>
 			<section id="projects" class="block">
 				<h2>{ t(l, "projects.h") }</h2>
+				<div class="featured">
+					<figure class="gs-mascot" aria-hidden="true">
+						<p class="gs-bubble">{ t(l, "gs.bubble") }</p>
+						<img src="/static/img/gitshelters-mascot.png" alt="" width="112" height="112"/>
+					</figure>
+					<a class="card card-magma" href="https://gitshelters.com">
+						<small>{ t(l, "gs.kicker") }</small>
+						<h3>GitShelters</h3>
+						<p>{ t(l, "gs.blurb") }</p>
+						<small>typescript · three.js · supabase · <span class="gs-links">gitshelters.com -&gt;</span></small>
+					</a>
+				</div>
 				<div class="grid">
 					for _, p := range projects {
 						<a class="card" href={ templ.SafeURL(p.URL) }>

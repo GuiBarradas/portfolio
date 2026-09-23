@@ -450,3 +450,40 @@ body.egg-open { overflow: hidden; }
   .articles { max-width: 860px; }
   .door { right: 48px; }
 }
+
+/* GitShelters, featured: the mascot hovers over a card with a stepped magma-lamp border */
+.featured { position: relative; margin: 96px 0 18px; }
+.gs-mascot { position: absolute; left: 24px; bottom: calc(100% - 18px); margin: 0; z-index: 2; animation: hover 2.4s ease-in-out infinite; }
+.gs-mascot img { display: block; image-rendering: pixelated; filter: drop-shadow(0 0 10px rgba(167, 108, 255, .75)); }
+@keyframes hover { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.gs-bubble {
+  position: absolute; left: 118px; top: 6px; margin: 0; width: max-content; max-width: 260px;
+  font: .6rem/1.5 var(--font-px); color: var(--slot-dark); background: #f4ecff; padding: 8px 10px;
+  box-shadow: 0 0 0 var(--px) var(--slot-dark), 4px 4px 0 var(--px) rgba(0,0,0,.45);
+}
+.gs-bubble::before {   /* the tail, pointing at the mouth: three stepped pixels */
+  content: ""; position: absolute; left: -12px; top: 22px; width: 4px; height: 4px; background: #f4ecff;
+  box-shadow: 4px 0 0 #f4ecff, 4px -4px 0 #f4ecff, 8px 0 0 #f4ecff, 8px -4px 0 #f4ecff, 8px 4px 0 #f4ecff;
+}
+.card-magma {
+  --m1: #ff3d00; --m2: #ff9e00; --m3: #ffe45a;
+  border: 0; padding: 22px 22px 18px;
+  box-shadow: 0 0 0 4px var(--m1), 0 0 0 8px var(--slot-dark), 0 0 0 12px var(--m2), 0 0 22px 12px rgba(255, 110, 0, .28);
+  animation: magma 3s steps(6) infinite;
+}
+.card-magma:hover { box-shadow: 0 0 0 4px var(--m3), 0 0 0 8px var(--slot-dark), 0 0 0 12px var(--m1), 0 0 30px 14px rgba(255, 110, 0, .45); }
+@keyframes magma {
+  0%, 100% { --m1: #ff3d00; --m2: #ff9e00; }
+  33%      { --m1: #ff9e00; --m2: #ffe45a; }
+  66%      { --m1: #ffe45a; --m2: #ff3d00; }
+}
+@property --m1 { syntax: "<color>"; inherits: false; initial-value: #ff3d00; }
+@property --m2 { syntax: "<color>"; inherits: false; initial-value: #ff9e00; }
+.card-magma h3 { font-size: 1.2rem; }
+.card-magma > small:first-child { color: #ffb347; }
+.gs-links { color: #ffe45a; }
+@media (max-width: 500px) {
+  .featured { margin-top: 128px; }
+  .gs-mascot { left: 8px; }
+  .gs-bubble { left: 104px; max-width: calc(100vw - 150px); }
+}

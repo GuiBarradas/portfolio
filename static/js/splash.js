@@ -5,6 +5,7 @@
   if (!el) return;
   var lines = [
     'also try Go!',
+    'new: gitshelters.com. go survive the 404!',
     '40 KB or it doesn\'t ship',
     '100% real metrics, press F3',
     'now with 8 C418 tracks',
